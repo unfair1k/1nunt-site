@@ -608,3 +608,44 @@ body.zooming #home { transform: scale(2.2) rotate(-2deg); filter: blur(20px); }
 .league-link { display:inline-flex; align-items:center; justify-content:center; color:var(--text); text-decoration:none; font:10px 'IBM Plex Mono',monospace; padding:12px 14px; border-radius:10px; cursor:pointer; }
 .league-note { margin:18px 2px 0; color:var(--muted); font-size:10px; line-height:1.8; text-transform:none; letter-spacing:.02em; }
 @media (max-width:520px) { .league-match-grid { grid-template-columns:70px 1fr; gap:12px; } .league-champ { width:70px; } .league-actions>* { flex:1; } }
+
+
+/* Live team composition */
+.league-teams { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:22px; }
+.league-team { min-width:0; border:1px solid var(--line); border-radius:14px; padding:12px; background:rgba(255,255,255,.025); }
+.league-team h4 { margin:0 0 10px; font:10px 'IBM Plex Mono',monospace; letter-spacing:.14em; color:var(--muted); }
+.league-team-enemies h4 { color:#e89b9b; }
+.league-team-list { display:flex; flex-direction:column; gap:8px; }
+.league-player { display:flex; align-items:center; gap:9px; min-width:0; }
+.league-player img,.league-player-placeholder { width:38px; height:38px; flex:0 0 38px; border-radius:9px; object-fit:cover; border:1px solid var(--line); background:rgba(255,255,255,.04); }
+.league-player-placeholder { display:grid; place-items:center; color:var(--muted); }
+.league-player-info { display:flex; flex-direction:column; min-width:0; gap:3px; }
+.league-player-champ { color:var(--text); font-size:12px; overflow-wrap:anywhere; }
+.league-player-name { color:var(--muted); font:9px 'IBM Plex Mono',monospace; overflow-wrap:anywhere; }
+.league-team-allies { border-top:2px solid rgba(100,160,255,.35); }
+.league-team-enemies { border-top:2px solid rgba(240,100,110,.35); }
+.league-composition-empty { padding:16px 4px; font-size:11px; }
+@media (max-width:520px) { .league-teams { grid-template-columns:1fr; } .league-player img,.league-player-placeholder { width:34px;height:34px;flex-basis:34px; } }
+
+/* ---------- League: partidas recentes ---------- */
+.league-history { margin-top:22px; }
+.league-history h4 { margin:0 0 10px; font:10px 'IBM Plex Mono',monospace; letter-spacing:.14em; color:var(--muted); font-weight:400; }
+.league-history-list { display:flex; flex-direction:column; gap:8px; }
+.lh-row { border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.03); border-left-width:3px; }
+.lh-row.win { border-left-color:rgba(105,230,164,.7); }
+.lh-row.loss { border-left-color:rgba(240,100,110,.7); }
+.lh-row summary { display:flex; align-items:center; gap:12px; padding:10px 12px; cursor:pointer; list-style:none; }
+.lh-row summary::-webkit-details-marker { display:none; }
+.lh-icon { width:40px; height:40px; flex:0 0 40px; border-radius:10px; object-fit:cover; border:1px solid var(--line); background:rgba(255,255,255,.04); }
+.lh-main { display:flex; flex-direction:column; gap:3px; min-width:0; flex:1; }
+.lh-champ { color:var(--text); font-size:14px; }
+.lh-sub { color:var(--muted); font:10px 'IBM Plex Mono',monospace; }
+.lh-res { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
+.lh-kda { color:var(--text); font:12px 'IBM Plex Mono',monospace; }
+.lh-wl { font:10px 'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.1em; }
+.lh-row.win .lh-wl { color:#69e6a4; }
+.lh-row.loss .lh-wl { color:#e89b9b; }
+.lh-teams { display:flex; align-items:center; justify-content:center; gap:12px; padding:4px 12px 12px; flex-wrap:wrap; }
+.lh-team { display:flex; gap:5px; }
+.lh-mini-img { width:28px; height:28px; border-radius:7px; object-fit:cover; border:1px solid var(--line); display:block; background:rgba(255,255,255,.04); }
+.lh-vs { color:var(--muted); font:10px 'IBM Plex Mono',monospace; }
