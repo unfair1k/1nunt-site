@@ -1,5 +1,5 @@
 
-const RIOT_API_KEY = "RGAPI-3f218ba2-c829-49c2-94f2-8715953cbe78";
+const RIOT_API_KEY = "RGAPI-acda7f11-ea22-4a50-8394-9906c9b779ba";
 
 export async function onRequestGet({ request }) {
   const url = new URL(request.url);
