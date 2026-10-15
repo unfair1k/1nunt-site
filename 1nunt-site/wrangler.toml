@@ -1,0 +1,7 @@
+name = "1nunt-site"
+pages_build_output_dir = "./"
+compatibility_date = "2026-10-15"
+
+[[kv_namespaces]]
+binding = "LEAGUE_STATUS"
+id = "SUBSTITUA_PELO_ID_DO_KV"
