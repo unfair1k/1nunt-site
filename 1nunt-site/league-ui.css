@@ -1,0 +1,78 @@
+/* 1nunt — League UI layer. Does not replace existing Riot/status logic. */
+#view-league .league-card{--lui-line:rgba(255,255,255,.095);--lui-muted:rgba(229,231,244,.48);--lui-text:#f3f4fb;position:relative;isolation:isolate;width:100%;max-width:1080px;margin:0 auto;padding:clamp(20px,3.3vw,38px);overflow:hidden;border:1px solid rgba(255,255,255,.13);border-radius:28px;background:radial-gradient(ellipse at 8% 0%,rgba(145,124,255,.15),transparent 36%),radial-gradient(ellipse at 100% 20%,rgba(91,157,255,.09),transparent 31%),linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.012) 55%),rgba(10,11,17,.7);box-shadow:0 30px 90px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);-webkit-backdrop-filter:blur(28px) saturate(125%);backdrop-filter:blur(28px) saturate(125%)}
+#view-league .league-card:before{content:"";position:absolute;z-index:-1;left:12%;right:12%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(195,184,255,.7),rgba(133,189,255,.2),transparent)}
+#view-league .league-card>header{margin:0 0 20px;padding:2px 0 19px;border-bottom:1px solid rgba(255,255,255,.085)}
+#view-league .league-card>header>.mono:first-child{display:flex;align-items:center;gap:9px;margin:0 0 14px;color:#b8abff;font-size:9px;letter-spacing:.2em}
+#view-league .league-card>header>.mono:first-child:before{content:"";width:6px;height:6px;border-radius:50%;background:#aa9aff;box-shadow:0 0 14px rgba(170,154,255,.85)}
+#view-league .league-card>header h2{margin:0;color:var(--lui-text);font-size:clamp(28px,4vw,44px);line-height:1.08;font-weight:400;letter-spacing:-.055em}
+#view-league .league-card>header .src{display:inline-flex;margin:12px 0 0;padding:6px 10px;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:rgba(255,255,255,.035);color:var(--lui-muted);font-size:9px;letter-spacing:.06em}
+#view-league .league-status{min-height:46px;gap:11px;margin:0 0 14px;padding:0 15px;border-color:var(--lui-line);border-radius:14px;background:linear-gradient(100deg,rgba(255,255,255,.05),rgba(255,255,255,.016));color:rgba(241,243,250,.8);font-size:9px;letter-spacing:.11em}
+#view-league .status-dot{width:7px;height:7px;flex:0 0 7px;box-shadow:0 0 0 4px rgba(255,255,255,.045)}
+#view-league .league-status[data-status=ingame] .status-dot{box-shadow:0 0 0 4px rgba(105,230,164,.09),0 0 15px rgba(105,230,164,.75)}
+#view-league .league-status[data-status=champselect] .status-dot{box-shadow:0 0 0 4px rgba(200,160,255,.1),0 0 15px rgba(200,160,255,.75)}
+#view-league .league-match{min-width:0;padding:clamp(14px,2.4vw,24px);border:1px solid var(--lui-line);border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.01) 66%),rgba(0,0,0,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#view-league .league-match-grid{grid-template-columns:clamp(76px,10vw,104px) minmax(0,1fr);gap:clamp(14px,2.3vw,24px)}
+#view-league .league-champ{width:100%;max-width:104px;border-radius:17px;border-color:rgba(255,255,255,.14);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+#view-league .league-match h3{margin:0 0 8px;color:var(--lui-text);font-size:clamp(20px,2.5vw,28px);font-weight:400;letter-spacing:-.04em}
+#view-league .league-meta{color:var(--lui-muted);font-size:9px;line-height:1.9;letter-spacing:.045em}
+#view-league .league-runes{gap:8px;margin-top:13px}
+#view-league .league-rune{width:29px;height:29px;padding:4px;border:1px solid var(--lui-line);border-radius:50%;background:rgba(255,255,255,.045)}
+#view-league .league-teams{gap:12px;margin-top:22px}
+#view-league .league-team{min-width:0;padding:14px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:rgba(0,0,0,.12)}
+#view-league .league-team-allies{border-top:2px solid rgba(140,185,255,.58)}
+#view-league .league-team-enemies{border-top:2px solid rgba(255,146,157,.5)}
+#view-league .league-team h4{margin:0 0 12px;color:rgba(233,234,245,.5);font-size:8px;letter-spacing:.18em}
+#view-league .league-player{gap:10px;min-width:0}
+#view-league .league-player img,#view-league .league-player-placeholder{width:36px;height:36px;flex:0 0 36px;border-radius:10px;border:1px solid var(--lui-line)}
+#view-league .league-player-champ{color:rgba(245,246,251,.89);font-size:10px}
+#view-league .league-player-name{color:rgba(230,232,242,.4);font-size:8px}
+#view-league .league-empty{padding:22px 14px;color:var(--lui-muted);font-size:11px;line-height:1.9}
+#view-league .league-history{margin-top:26px}
+#view-league .league-history>h4{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;color:rgba(231,232,244,.65);font-size:9px;letter-spacing:.18em}
+#view-league .league-history>h4:after{content:"MATCH LOG / 10";color:rgba(231,232,244,.28);font-size:8px;letter-spacing:.1em}
+#view-league .league-history-list{display:grid;gap:9px}
+#view-league .lh-row{overflow:hidden;border:1px solid rgba(255,255,255,.08);border-left:2px solid rgba(255,255,255,.18);border-radius:15px;background:linear-gradient(110deg,rgba(255,255,255,.035),rgba(255,255,255,.01));transition:border-color .22s ease,background .22s ease,transform .22s ease}
+#view-league .lh-row.win{border-left-color:rgba(130,230,181,.75)}
+#view-league .lh-row.loss{border-left-color:rgba(255,146,157,.68)}
+#view-league .lh-row:hover{background:linear-gradient(110deg,rgba(255,255,255,.06),rgba(255,255,255,.018));transform:translateY(-1px)}
+#view-league .lh-row summary{display:flex;align-items:center;gap:13px;min-height:72px;padding:12px 16px;list-style:none;cursor:pointer}
+#view-league .lh-row summary::-webkit-details-marker{display:none}
+#view-league .lh-row summary:after{content:"+";display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;margin-left:1px;border:1px solid rgba(255,255,255,.09);border-radius:50%;color:rgba(235,236,246,.5);font:13px/1 "IBM Plex Mono",monospace;transition:transform .2s ease,color .2s ease}
+#view-league .lh-row[open] summary:after{content:"−";transform:rotate(180deg);color:var(--lui-text)}
+#view-league .lh-icon{width:47px;height:47px;flex:0 0 47px;border-radius:12px;border:1px solid rgba(255,255,255,.12);object-fit:cover}
+#view-league .lh-main{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
+#view-league .lh-champ{color:var(--lui-text);font-size:12px;font-weight:500;letter-spacing:-.015em}
+#view-league .lh-sub{color:rgba(228,230,241,.43);font:8px/1.6 "IBM Plex Mono",monospace}
+#view-league .lh-res{display:flex;flex:0 0 auto;flex-direction:column;align-items:flex-end;gap:6px;min-width:74px}
+#view-league .lh-kda{color:rgba(244,245,251,.9);font:10px/1.4 "IBM Plex Mono",monospace;white-space:nowrap}
+#view-league .lh-wl{padding:4px 7px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:rgba(255,255,255,.025);font:8px/1.2 "IBM Plex Mono",monospace;letter-spacing:.1em}
+#view-league .lh-row.win .lh-wl{color:#82e6b5;border-color:rgba(130,230,181,.16);background:rgba(130,230,181,.07)}
+#view-league .lh-row.loss .lh-wl{color:#ff929d;border-color:rgba(255,146,157,.14);background:rgba(255,146,157,.055)}
+#view-league .lh-teams{display:flex;align-items:center;justify-content:center;gap:12px;padding:1px 16px 15px}
+#view-league .lh-team{display:flex;flex-wrap:wrap;gap:5px}
+#view-league .lh-mini{display:inline-flex}
+#view-league .lh-mini-img{width:29px;height:29px;border-radius:8px;border:1px solid var(--lui-line);object-fit:cover}
+#view-league .lh-vs{color:rgba(230,231,243,.35);font-size:8px;letter-spacing:.15em}
+#view-league .league-actions{gap:9px;margin-top:17px}
+#view-league .league-link{min-height:42px;padding:0 15px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035);color:rgba(244,245,251,.82);font:9px/1.4 "IBM Plex Mono",monospace;transition:border-color .2s ease,background .2s ease,transform .2s ease}
+#view-league .league-link:hover{border-color:rgba(184,176,255,.3);background:rgba(168,155,255,.075);transform:translateY(-1px)}
+#view-league .league-insights{margin:18px 0 0;padding:17px 18px 15px;border:1px solid rgba(255,255,255,.085);border-radius:18px;background:linear-gradient(125deg,rgba(168,155,255,.065),transparent 46%),rgba(255,255,255,.018)}
+#view-league .league-insights[hidden]{display:none!important}
+#view-league .league-insights-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+#view-league .league-insights-title{color:rgba(230,231,243,.56);font:8px/1.4 "IBM Plex Mono",monospace;letter-spacing:.18em}
+#view-league .league-insights-count{color:rgba(230,231,243,.34);font:8px/1.4 "IBM Plex Mono",monospace}
+#view-league .league-metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#view-league .league-metric{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(0,0,0,.13)}
+#view-league .league-metric-label{display:block;margin-bottom:7px;color:rgba(230,231,243,.42);font:8px/1.4 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+#view-league .league-metric-value{color:var(--lui-text);font-size:clamp(19px,2.7vw,26px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+#view-league .league-metric-value.is-positive{color:#82e6b5}
+#view-league .league-metric-value.is-negative{color:#ff929d}
+#view-league .league-formline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:15px}
+#view-league .league-form-label{color:rgba(230,231,243,.42);font:8px/1.4 "IBM Plex Mono",monospace;letter-spacing:.12em}
+#view-league .league-form-dots{display:flex;align-items:center;gap:5px}
+#view-league .league-form-dot{display:grid;place-items:center;width:19px;height:19px;border-radius:6px;font:9px/1 "IBM Plex Mono",monospace}
+#view-league .league-form-dot.win{color:#82e6b5;background:rgba(130,230,181,.12);border:1px solid rgba(130,230,181,.18)}
+#view-league .league-form-dot.loss{color:#ff929d;background:rgba(255,146,157,.1);border:1px solid rgba(255,146,157,.17)}
+@media(min-width:900px){#view-league .league-card{align-self:center;max-height:calc(100dvh - 140px);overflow:auto}}
+@media(max-width:600px){#view-league .league-card{padding:19px 13px 15px;border-radius:22px}#view-league .league-card>header{margin-bottom:17px;padding-bottom:16px}#view-league .league-match{padding:13px;border-radius:16px}#view-league .league-match-grid{grid-template-columns:70px minmax(0,1fr);gap:12px}#view-league .league-champ{width:70px}#view-league .league-teams{grid-template-columns:1fr}#view-league .league-insights{padding:14px 11px 12px}#view-league .league-metric-grid{gap:6px}#view-league .league-metric{padding:11px 8px}#view-league .league-metric-label{font-size:7px;letter-spacing:.06em}#view-league .lh-row summary{gap:9px;padding:10px;min-height:64px}#view-league .lh-icon{width:39px;height:39px;flex-basis:39px;border-radius:10px}#view-league .lh-res{min-width:60px}#view-league .lh-kda{font-size:9px}#view-league .lh-sub{font-size:7px}#view-league .lh-row summary:after{width:18px;height:18px;flex-basis:18px}#view-league .lh-teams{padding:0 10px 12px;gap:8px}#view-league .lh-mini-img{width:25px;height:25px}}
+@media(prefers-reduced-motion:reduce){#view-league .lh-row,#view-league .lh-row summary:after,#view-league .league-link{transition:none}}
