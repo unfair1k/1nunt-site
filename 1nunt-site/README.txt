@@ -76,3 +76,16 @@ CONFIGURAR CLOUDFLARE:
 STATUS DE SEGURANÇA: o endpoint público de leitura expõe somente o status de jogo e detalhes da partida; qualquer visitante pode consultar isso. O endpoint de publicação exige segredo. Não compartilhe o segredo nem o coloque em script.js. KV expira os dados após 3 minutos e o endpoint retorna offline se não houver atualização em 90 segundos.
 
 Deploy direto por arrastar ZIP no dashboard não processa Pages Functions. Use Git integration ou Wrangler conforme documentação oficial: https://developers.cloudflare.com/pages/get-started/direct-upload/ e https://developers.cloudflare.com/pages/functions/
+
+
+CORRECAO PARA STATUS PUBLICO NO CLOUDFLARE PAGES
+================================================
+A rota de leitura e /api/league/status e a rota de envio e /api/league/publish.
+A Pages Function de publicacao fica em functions/api/league/publish.js.
+No painel Pages, configure a binding KV chamada LEAGUE_STATUS e o secret PUBLISH_SECRET.
+O ID do KV deve ser associado no painel, nao coloque segredos neste repositorio publico.
+No PowerShell, substitua o dominio e o segredo reais:
+  $env:LEAGUE_STATUS_PUBLISH_URL = "https://1nunt-site.pages.dev/api/league/publish"
+  $env:LEAGUE_STATUS_SECRET = "COLOQUE_AQUI_O_MESMO_SEGREDO_CONFIGURADO_NO_CLOUDFLARE"
+  py league-companion.py
+Nao publique o segredo no GitHub.
