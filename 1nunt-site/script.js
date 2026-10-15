@@ -273,9 +273,19 @@ function renderLeague(data) {
   const m = data.match || {};
   const champ = m.champion || (status === "queue" ? "Aguardando partida" : "Campeão não detectado");
   const image = m.championImage || "";
-  const matchup = m.matchup || "Não disponível";
   const runes = Array.isArray(m.runes) ? m.runes : [];
-  leagueMatch.innerHTML = '<div class="league-match-grid">' + (image ? '<img class="league-champ" src="' + esc(image) + '" alt="' + esc(champ) + '">' : '<div class="league-champ"></div>') + '<div><h3>' + esc(champ) + '</h3><div class="league-meta">' + esc(m.queue || (status === "queue" ? "Fila" : status === "champselect" ? "Seleção de campeão" : "Modo não informado")) + '<br>matchup: ' + esc(matchup) + '</div><div class="league-runes">' + runes.map(r => r.image ? '<img class="league-rune" src="' + esc(r.image) + '" alt="runa" title="' + esc(r.name || "Runa") + '">' : '<span class="mono">' + esc(r.name || r) + '</span>').join("") + '</div></div></div>';
+  const escAttr = (v) => esc(String(v || ""));
+  const renderTeam = (title, players, side) => {
+    if (!Array.isArray(players) || !players.length) return '';
+    return '<section class="league-team league-team-' + side + '"><h4>' + title + '</h4><div class="league-team-list">' + players.map((p, i) => {
+      const name = p.champion || 'Escolhendo campeão';
+      const portrait = p.championImage || '';
+      const player = p.player || '';
+      return '<div class="league-player">' + (portrait ? '<img src="' + escAttr(portrait) + '" alt="' + escAttr(name) + '" loading="lazy">' : '<div class="league-player-placeholder">?</div>') + '<div class="league-player-info"><span class="league-player-champ">' + esc(name) + '</span>' + (player ? '<span class="league-player-name">' + esc(player) + '</span>' : '<span class="league-player-name">Jogador ' + (i + 1) + '</span>') + '</div></div>';
+    }).join('') + '</div></section>';
+  };
+  const teamMarkup = renderTeam('ALIADOS', m.allies, 'allies') + renderTeam('INIMIGOS', m.enemies, 'enemies');
+  leagueMatch.innerHTML = '<div class="league-match-grid">' + (image ? '<img class="league-champ" src="' + escAttr(image) + '" alt="' + escAttr(champ) + '">' : '<div class="league-champ"></div>') + '<div><h3>' + esc(champ) + '</h3><div class="league-meta">' + esc(m.queue || (status === "queue" ? "Fila" : status === "champselect" ? "Seleção de campeão" : "Modo não informado")) + '</div><div class="league-runes">' + runes.map(r => r.image ? '<img class="league-rune" src="' + escAttr(r.image) + '" alt="runa" title="' + escAttr(r.name || "Runa") + '">' : '<span class="mono">' + esc(r.name || r) + '</span>').join("") + '</div></div></div>' + (teamMarkup ? '<div class="league-teams">' + teamMarkup + '</div>' : '<div class="league-empty league-composition-empty">A composição dos times aparecerá na seleção de campeões ou durante a partida.</div>');
 }
 async function refreshLeague() {
   leagueStatusText.textContent = "consultando…";
@@ -291,6 +301,68 @@ async function refreshLeague() {
 $("#refreshLeague").addEventListener("click", refreshLeague);
 refreshLeague();
 setInterval(refreshLeague, 15000);
+
+/* ---------- League: partidas recentes (Riot API via /api/riot/matches) ---------- */
+const LEAGUE_HISTORY_URL = "/api/riot/matches?gameName=joji&tagLine=mandy&count=10";
+const leagueHistory = $("#leagueHistory");
+const CHAMP_NAMES = { MonkeyKing: "Wukong", MissFortune: "Miss Fortune", MasterYi: "Master Yi", TahmKench: "Tahm Kench", JarvanIV: "Jarvan IV", LeeSin: "Lee Sin", AurelionSol: "Aurelion Sol", DrMundo: "Dr. Mundo", XinZhao: "Xin Zhao", TwistedFate: "Twisted Fate", KogMaw: "Kog'Maw", Khazix: "Kha'Zix", Chogath: "Cho'Gath", Velkoz: "Vel'Koz", RekSai: "Rek'Sai", KSante: "K'Sante", Kaisa: "Kai'Sa", Belveth: "Bel'Veth", Leblanc: "LeBlanc", Nunu: "Nunu e Willump", RenataGlasc: "Renata Glasc" };
+const MODE_NAMES = { CLASSIC: "Summoner's Rift", ARAM: "ARAM", URF: "URF", CHERRY: "Arena", TUTORIAL: "Tutorial" };
+let ddVersion = "";
+let leagueHistoryAt = 0;
+const champName = (id) => CHAMP_NAMES[id] || String(id || "?");
+const champIcon = (id) => ddVersion ? "https://ddragon.leagueoflegends.com/cdn/" + ddVersion + "/img/champion/" + encodeURIComponent(id) + ".png" : "";
+const fmtDur = (sec) => Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+function timeAgo(ms) {
+  const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
+  if (m < 60) return "há " + m + " min";
+  const h = Math.round(m / 60);
+  if (h < 48) return "há " + h + " h";
+  return "há " + Math.round(h / 24) + " dias";
+}
+function champImg(id, cls) {
+  const src = champIcon(id);
+  return src ? '<img class="' + cls + '" src="' + esc(src) + '" alt="' + esc(champName(id)) + '" loading="lazy" onerror="this.style.visibility=\'hidden\'">' : '<div class="' + cls + '"></div>';
+}
+function renderHistory(data) {
+  const list = Array.isArray(data?.matches) ? data.matches : [];
+  if (!list.length) {
+    leagueHistory.innerHTML = '<div class="league-empty">' + esc(data?.error || data?.message || "Nenhuma partida recente encontrada.") + '</div>';
+    return;
+  }
+  leagueHistory.innerHTML = list.map((m) => {
+    const parts = Array.isArray(m.participants) ? m.participants : [];
+    const team = (id) => parts.filter((p) => p.teamId === id).map((p) => '<span class="lh-mini" title="' + esc(champName(p.champion)) + '">' + champImg(p.champion, "lh-mini-img") + '</span>').join("");
+    const mode = MODE_NAMES[m.gameMode] || m.gameMode || "";
+    return '<details class="lh-row ' + (m.win ? "win" : "loss") + '"><summary>' +
+      champImg(m.champion, "lh-icon") +
+      '<div class="lh-main"><span class="lh-champ">' + esc(champName(m.champion)) + '</span><span class="lh-sub">' + esc(mode) + ' · ' + esc(fmtDur(m.gameDuration || 0)) + ' · ' + esc(timeAgo(m.gameCreation || 0)) + '</span></div>' +
+      '<div class="lh-res"><span class="lh-kda">' + esc(m.kda || "") + '</span><span class="lh-wl">' + (m.win ? "vitória" : "derrota") + '</span></div></summary>' +
+      '<div class="lh-teams"><div class="lh-team">' + team(100) + '</div><div class="lh-vs">vs</div><div class="lh-team">' + team(200) + '</div></div></details>';
+  }).join("");
+}
+async function refreshLeagueHistory(force) {
+  if (!force && Date.now() - leagueHistoryAt < 60000) return;
+  leagueHistoryAt = Date.now();
+  try {
+    if (!ddVersion) {
+      try {
+        const v = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", { signal: AbortSignal.timeout(5000) });
+        ddVersion = (await v.json())[0] || "";
+      } catch (_) { /* sem ícones, mas a lista continua */ }
+    }
+    const response = await fetch(LEAGUE_HISTORY_URL, { cache: "no-store", signal: AbortSignal.timeout(15000) });
+    const type = response.headers.get("content-type") || "";
+    if (!type.includes("application/json")) throw new Error("resposta não é JSON");
+    const data = await response.json();
+    if (!response.ok) { renderHistory({ error: data?.error || data?.message || "Erro ao consultar a Riot API." }); return; }
+    renderHistory(data);
+  } catch (_) {
+    leagueHistoryAt = 0;
+    leagueHistory.innerHTML = '<div class="league-empty">Não foi possível carregar as partidas agora.</div>';
+  }
+}
+$("#refreshLeague").addEventListener("click", () => refreshLeagueHistory(false));
+refreshLeagueHistory(true);
 
 /* ---------- abas ---------- */
 const tabs = $("#tabs");
