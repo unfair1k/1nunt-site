@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1nunt</title>
+<meta name="description" content="1nunt — personal space">
+<meta name="theme-color" content="#070707">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scene" id="scene"><img class="scene-img" id="sceneImg" alt="" src="bg.jpg"></div>
+<div class="scene-shade"></div>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
+<canvas id="bg"></canvas>
+<div class="grain"></div>
+
+<!-- ============ TELA 1: INÍCIO ============ -->
+<section id="intro" aria-label="Início">
+  <button class="start" id="startBtn" type="button">click to start</button>
+  <div class="gender" id="gender" aria-hidden="true">
+    <button class="glass gbtn" type="button" data-g="f" aria-label="feminino"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="5"/><path d="M12 13.5V22M8.5 18.5h7"/></svg></button>
+    <button class="glass gbtn" type="button" data-g="m" aria-label="masculino"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="14" r="5"/><path d="M13.6 10.4L20 4M15 4h5v5"/></svg></button>
+  </div>
+</section>
+<div class="ripple" id="ripple"></div>
+
+<!-- ============ TELA 2: PERFIL + MÚSICA ============ -->
+<main id="home">
+  <div class="wrap">
+    <nav class="glass rise tabs" id="tabs" data-active="profile" role="tablist" style="--d:.15s">
+      <span class="pill"></span>
+      <button class="tab" role="tab" aria-selected="true" data-tab="profile">perfil</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="music">música</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="league">league</button>
+    </nav>
+
+    <!-- Aba: Perfil -->
+    <section class="view active" id="view-profile">
+      <div class="glass tilt rise profile-card" style="--d:.3s">
+        <div class="avatar"><img src="avatar.gif" alt="1nunt"></div>
+        <h1 class="name" id="name"></h1>
+        <p class="handle" id="handle"></p>
+        <div class="chip"><span class="eq"><i></i><i></i><i></i></span><span class="txt" id="chipText">ouvindo</span></div>
+        <p class="bio" id="bioBtn" role="button" tabindex="0" aria-label="Abrir foto"><span id="bio"></span><span class="caret"></span></p>
+      </div>
+
+      <div class="links">
+        <a class="glass tile rise" style="--c:#ff5c93; --d:0.55s" href="https://instagram.com/1nunt" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="f" cx="17.2" cy="6.8" r="0.9"/></svg><span class="tl"><span class="n">instagram</span></span></a>
+        <a class="glass tile rise" style="--c:#4be58a; --d:0.63s" href="https://open.spotify.com/user/ptm2n72vgffg7qef5tg9r1mh6?si=abe8e1d7e24e449c" target="_blank" rel="noreferrer" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M6.8 9.4c3.5-1 7.4-.8 10.6 1.1"/><path d="M7.5 12.6c3-.8 6-.5 8.8 1"/><path d="M8.3 15.6c2.4-.6 4.4-.4 6.4.7"/></svg><span class="tl"><span class="n">spotify</span></span></a>
+        <a class="glass tile rise" style="--c:#ff5a5a; --d:0.71s" href="https://www.last.fm/user/ludibrio" target="_blank" rel="noreferrer" aria-label="Last.fm" title="Last.fm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h3l2.5-6 3 11 3-9 1.8 4H21"/></svg><span class="tl"><span class="n">last.fm</span></span></a>
+        <!-- para adicionar outra rede, copie um bloco <a class="glass tile rise"...> acima,
+             troque o href, o nome e o ícone (svg). A grade tem 3 colunas e quebra de linha sozinha. -->
+      </div>
+    </section>
+
+    <!-- Aba: League of Legends -->
+    <section class="view" id="view-league">
+      <div class="glass rise music-card league-card" style="--d:.1s">
+        <header>
+          <span class="mono">RIOT ID · BR</span>
+          <h2>League of Legends</h2>
+          <p class="mono src">joji#mandy</p>
+        </header>
+        <div class="league-status" id="leagueStatus" data-status="unknown">
+          <span class="status-dot"></span><span id="leagueStatusText">status não verificado</span>
+        </div>
+        <div class="league-match" id="leagueMatch">
+          <div class="league-empty">Conecte um serviço de status para mostrar sua partida ao vivo.</div>
+        </div>
+        <div class="league-actions">
+          <a class="glass league-link" href="https://op.gg/pt/lol/summoners/br/joji-MANDY" target="_blank" rel="noreferrer">abrir perfil no OP.GG ↗</a>
+          <button class="glass league-link" id="refreshLeague" type="button">atualizar status</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Aba: Música -->
+    <section class="view" id="view-music">
+      <div class="glass rise music-card" style="--d:.1s">
+        <header>
+          <span class="mono">last.fm · ludibrio</span>
+          <h2>Mais ouvidas</h2>
+          <p class="mono src" id="musicNote"></p>
+        </header>
+        <div class="periods" id="periods" role="tablist" aria-label="Período"></div>
+        <ol class="tracklist" id="tracklist"></ol>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="reveal" aria-hidden="true" role="dialog" aria-label="Foto">
+  <div class="rv-shake"><div class="reveal-stage"><img class="reveal-img" src="bio.jpg" alt=""></div></div>
+  <div class="rv-vig"></div>
+  <div class="lb t"></div><div class="lb b"></div>
+  <div class="rv-flash"></div>
+  <p class="rv-cap" id="rvCap"></p>
+  <p class="rv-hint mono">toque para voltar</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
